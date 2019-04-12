@@ -24,9 +24,10 @@ router.post("/", async (req, res) => {
         res.status(201).json(newGame);
       }
     } catch (error) {
-      res
-        .status(500)
-        .json({ message: `Your game could not be posted ${error}.` });
+      // A non-unique title should be the only way for a request to fail if the title and genre are valid due to my table constraints.
+      res.status(405).json({
+        message: `Your game could not be posted because the title is not unique ${error}.`
+      });
     }
   }
 });
