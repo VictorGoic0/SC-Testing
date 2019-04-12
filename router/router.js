@@ -13,6 +13,22 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const game = await db.findById(id);
+    if (game) {
+      res.status(200).json(game);
+    } else {
+      res
+        .status(404)
+        .json({ message: "Game with specified ID does not exist." });
+    }
+  } catch (error) {
+    res.status(500).json({ message: `Game request failed ${error}.` });
+  }
+});
+
 router.post("/", async (req, res) => {
   const game = req.body;
   if (!game.title || !game.genre) {
